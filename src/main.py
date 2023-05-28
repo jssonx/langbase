@@ -72,10 +72,23 @@ def is_openai_api_key_set() -> bool:
     return len(st.session_state["OPENAI_API_KEY"]) > 0
 
 
+def get_token_nums():
+    converted_messages = convert_messages(st.session_state["messages"])
+    return st.session_state["langbase"].get_tokens(converted_messages)
+
+
+def convert_messages(raw_messages):
+    messages = []
+    for msg, is_user in raw_messages:
+        messages.append({"role": "user" if is_user else "assistant", "content": msg})
+    return messages
+
+
 def display_session_state():
     st.subheader("Session State")
     st.write("messages:", st.session_state["messages"])
     st.write("langbase:", st.session_state["langbase"])
+    st.write("token_nums:", get_token_nums())
 
 
 def main():

@@ -9,6 +9,7 @@ from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
 from dotenv import load_dotenv
 from pprint import pprint
+from utils.cal_tokens import get_num_tokens_from_messages
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -38,7 +39,7 @@ class Langbase:
         else:
             docs = self.db.get_relevant_documents(question)
             response = self.chain.run(input_documents=docs, human_input=question)
-            pprint(response)
+            # pprint(response)
         # return "answer"
         return response
 
@@ -49,6 +50,9 @@ class Langbase:
         self.db = Chroma.from_documents(splitted_documents, self.embeddings).as_retriever()
         self.chain = load_qa_chain(self.llm, chain_type="stuff", memory=self.memory, prompt=self.prompt)
         # self.chain = load_qa_chain(self.llm, chain_type="stuff")
+
+    def get_tokens(self, messages) -> int:
+        return get_num_tokens_from_messages(messages)
 
     def forget(self) -> None:
         self.db = None
