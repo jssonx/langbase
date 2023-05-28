@@ -90,11 +90,24 @@ def display_session_state():
     st.write("langbase:", st.session_state["langbase"])
     st.write("token_nums:", get_token_nums())
 
+def display_titles():
+    st.write(
+            """
+            ✨ langbase &nbsp; [![GitHub][github_badge]][github_link]
+            =====================
+
+            A LangChain-based knowledgebase QA dock.
+
+            [github_badge]: https://badgen.net/badge/icon/GitHub?icon=github&color=black&label
+            [github_link]: https://github.com/jssonx/langbase
+            """
+        )
+    
 
 def main():
+    display_titles()
     initialize_session_state()
 
-    st.header("A langchain-based KB QA system")
 
     if st.text_input(
         "OpenAI API Key",
@@ -119,7 +132,7 @@ def main():
 
     display_messages()
     st.text_input(
-        "Message",
+        "Start here",
         key="user_input",
         disabled=not is_openai_api_key_set(),
         on_change=process_input,
