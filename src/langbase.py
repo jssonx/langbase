@@ -39,7 +39,8 @@ class Langbase:
             docs = self.db.get_relevant_documents(question)
             response = self.chain.run(input_documents=docs, human_input=question)
             pprint(response)
-        return "answer"
+        # return "answer"
+        return response
 
     def ingest(self, file_path: str) -> None:
         loader = PyMuPDFLoader(file_path)
