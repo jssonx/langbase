@@ -7,10 +7,10 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.chat_models import ChatOpenAI
 from dotenv import load_dotenv
 
-# load_dotenv()
-# OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-class PDFQuery:
+class Langbase:
     def __init__(self, openai_api_key=None) -> None:
         OPENAI_API_KEY = openai_api_key
         self.embeddings = OpenAIEmbeddings(client=None, openai_api_key=openai_api_key)
