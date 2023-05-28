@@ -12,11 +12,9 @@ def initialize_session_state():
         st.session_state["messages"] = []
         st.session_state["OPENAI_API_KEY"] = os.environ.get("OPENAI_API_KEY", "")
         if is_openai_api_key_set():
-            st.session_state["conversation"] = Langbase(
-                st.session_state["OPENAI_API_KEY"]
-            )
+            st.session_state["langbase"] = Langbase(st.session_state["OPENAI_API_KEY"])
         else:
-            st.session_state["conversation"] = None
+            st.session_state["langbase"] = None
 
 
 def update_openai_api_key():
@@ -26,11 +24,11 @@ def update_openai_api_key():
         != st.session_state["OPENAI_API_KEY"]
     ):
         st.session_state["OPENAI_API_KEY"] = st.session_state["input_OPENAI_API_KEY"]
-        if st.session_state["conversation"] is not None:
+        if st.session_state["langbase"] is not None:
             st.warning("Please upload files again.")
         st.session_state["messages"] = []
         st.session_state["user_input"] = ""
-        st.session_state["conversation"] = Langbase(st.session_state["OPENAI_API_KEY"])
+        st.session_state["langbase"] = Langbase(st.session_state["OPENAI_API_KEY"])
 
 
 def display_messages():
@@ -45,16 +43,16 @@ def process_input():
         st.session_state["user_input"]
         and len(st.session_state["user_input"].strip()) > 0
     ):
-        user_text = st.session_state["user_input"].strip()
+        query = st.session_state["user_input"].strip()
         with st.session_state["thinking_spinner"], st.spinner(f"Thinking"):
-            query_text = st.session_state["conversation"].ask(user_text)
+            answers_from_gpt = st.session_state["langbase"].ask(query)
 
-        st.session_state["messages"].append((user_text, True))
-        st.session_state["messages"].append((query_text, False))
+        st.session_state["messages"].append((query, True))
+        st.session_state["messages"].append((answers_from_gpt, False))
 
 
 def read_and_save_file():
-    st.session_state["conversation"].forget()  # to reset the knowledge base
+    st.session_state["langbase"].forget()  # to reset the knowledge base
     st.session_state["messages"] = []
     st.session_state["user_input"] = ""
 
@@ -66,7 +64,7 @@ def read_and_save_file():
         with st.session_state["ingestion_spinner"], st.spinner(
             f"Ingesting {file.name}"
         ):
-            st.session_state["conversation"].ingest(file_path)
+            st.session_state["langbase"].ingest(file_path)
         os.remove(file_path)
 
 
@@ -74,10 +72,16 @@ def is_openai_api_key_set() -> bool:
     return len(st.session_state["OPENAI_API_KEY"]) > 0
 
 
+def display_session_state():
+    st.subheader("Session State")
+    st.write("messages:", st.session_state["messages"])
+    st.write("langbase:", st.session_state["langbase"])
+
+
 def main():
     initialize_session_state()
 
-    st.header("ChatPDF")
+    st.header("A langchain-based KB QA system")
 
     if st.text_input(
         "OpenAI API Key",
@@ -109,6 +113,7 @@ def main():
     )
 
     st.divider()
+    display_session_state()  # 添加显示会话状态的部分
 
 
 if __name__ == "__main__":
