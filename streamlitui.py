@@ -84,10 +84,11 @@ def main():
     st.text_input("Message", key="user_input", disabled=not is_openai_api_key_set(), on_change=process_input)
 
     st.divider()
-    st.markdown("Source code: [Github](https://github.com/Anil-matcha/ChatPDF)")
+    st.markdown("Source code: [Github](https://github.com/jssonx/langbase-v1)")
 
 if __name__ == "__main__":
     main()
 
 # Who is the author of the paper "Attention is all you need"?
 # Give me a program that say hello world in C++.
+# What is MACK CROLANGUAGE's email address?
