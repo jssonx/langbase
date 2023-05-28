@@ -14,6 +14,7 @@ Python, LangChain, Supabase, HuggingFace, Kubernetes, Streamlit
 2. 聊天场景：
    1. (ok) 添加记忆
    2. (ok) 添加预设的Prompt
+   3. 添加来源
 3. 添加支持的输入类型
    1. txt
    2. 网页链接
