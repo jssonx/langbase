@@ -114,6 +114,6 @@ def main():
 if __name__ == "__main__":
     main()
 
+# Questions:
 # Who is the author of the paper "Attention is all you need"?
-# Give me a program that say hello world in C++.
 # What is MACK CROLANGUAGE's email address?
