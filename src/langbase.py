@@ -2,7 +2,7 @@ import os
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
-from langchain.document_loaders import PyPDFium2Loader
+from langchain.document_loaders import PyMuPDFLoader
 from langchain.chains.question_answering import load_qa_chain
 from langchain.chat_models import ChatOpenAI
 from dotenv import load_dotenv
@@ -30,7 +30,7 @@ class Langbase:
         return response
 
     def ingest(self, file_path: str) -> None:
-        loader = PyPDFium2Loader(file_path)
+        loader = PyMuPDFLoader(file_path)
         documents = loader.load()
         splitted_documents = self.text_splitter.split_documents(documents)
         self.db = Chroma.from_documents(splitted_documents, self.embeddings).as_retriever()
