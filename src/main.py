@@ -2,7 +2,7 @@ import os
 import tempfile
 import streamlit as st
 from streamlit_chat import message
-from langbase import Langbase
+from utils.langbase import Langbase
 
 st.set_page_config(page_title="langbase", page_icon=":book:", layout="wide")
 
