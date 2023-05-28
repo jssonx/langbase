@@ -4,7 +4,28 @@ import streamlit as st
 from streamlit_chat import message
 from pdfquery import PDFQuery
 
-st.set_page_config(page_title="ChatPDF")
+st.set_page_config(page_title="langbase", page_icon=":book:", layout="wide")
+
+def initialize_session_state():
+    if len(st.session_state) == 0:
+        st.session_state["messages"] = []
+        st.session_state["OPENAI_API_KEY"] = os.environ.get("OPENAI_API_KEY", "")
+        if is_openai_api_key_set():
+            st.session_state["pdfquery"] = PDFQuery(st.session_state["OPENAI_API_KEY"])
+        else:
+            st.session_state["pdfquery"] = None
+
+def update_openai_api_key():
+    if (
+        len(st.session_state["input_OPENAI_API_KEY"]) > 0
+        and st.session_state["input_OPENAI_API_KEY"] != st.session_state["OPENAI_API_KEY"]
+    ):
+        st.session_state["OPENAI_API_KEY"] = st.session_state["input_OPENAI_API_KEY"]
+        if st.session_state["pdfquery"] is not None:
+            st.warning("Please, upload the files again.")
+        st.session_state["messages"] = []
+        st.session_state["user_input"] = ""
+        st.session_state["pdfquery"] = PDFQuery(st.session_state["OPENAI_API_KEY"])
 
 def display_messages():
     st.subheader("Chat")
@@ -21,7 +42,6 @@ def process_input():
         st.session_state["messages"].append((user_text, True))
         st.session_state["messages"].append((query_text, False))
 
-
 def read_and_save_file():
     st.session_state["pdfquery"].forget()  # to reset the knowledge base
     st.session_state["messages"] = []
@@ -36,33 +56,16 @@ def read_and_save_file():
             st.session_state["pdfquery"].ingest(file_path)
         os.remove(file_path)
 
-
 def is_openai_api_key_set() -> bool:
     return len(st.session_state["OPENAI_API_KEY"]) > 0
 
-
 def main():
-    if len(st.session_state) == 0:
-        st.session_state["messages"] = []
-        st.session_state["OPENAI_API_KEY"] = os.environ.get("OPENAI_API_KEY", "")
-        if is_openai_api_key_set():
-            st.session_state["pdfquery"] = PDFQuery(st.session_state["OPENAI_API_KEY"])
-        else:
-            st.session_state["pdfquery"] = None
+    initialize_session_state()
 
     st.header("ChatPDF")
 
     if st.text_input("OpenAI API Key", value=st.session_state["OPENAI_API_KEY"], key="input_OPENAI_API_KEY", type="password"):
-        if (
-            len(st.session_state["input_OPENAI_API_KEY"]) > 0
-            and st.session_state["input_OPENAI_API_KEY"] != st.session_state["OPENAI_API_KEY"]
-        ):
-            st.session_state["OPENAI_API_KEY"] = st.session_state["input_OPENAI_API_KEY"]
-            if st.session_state["pdfquery"] is not None:
-                st.warning("Please, upload the files again.")
-            st.session_state["messages"] = []
-            st.session_state["user_input"] = ""
-            st.session_state["pdfquery"] = PDFQuery(st.session_state["OPENAI_API_KEY"])
+        update_openai_api_key()
 
     st.subheader("Upload a document")
     st.file_uploader(
@@ -83,6 +86,8 @@ def main():
     st.divider()
     st.markdown("Source code: [Github](https://github.com/Anil-matcha/ChatPDF)")
 
-
 if __name__ == "__main__":
     main()
+
+# Who is the author of the paper "Attention is all you need"?
+# Give me a program that say hello world in C++.
