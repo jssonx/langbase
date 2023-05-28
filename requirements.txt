@@ -1,0 +1,7 @@
+ pypdfium2
+ streamlit_chat
+ langchain
+ streamlit
+ tiktoken
+ faiss-cpu
+ openai
