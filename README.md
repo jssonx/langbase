@@ -4,8 +4,8 @@ Python, LangChain, Supabase, HuggingFace, Kubernetes, Streamlit
 
 ## TODOs
 1. 环境配置：
-   1. 改到Ubuntu上
-   2. 修改requirements.txt
+   1. (ok) 改到Ubuntu上
+   2. (ok) 修改requirements.txt
 2. 聊天场景：
    1. 添加预设的Prompt
    2. 添加记忆
@@ -23,3 +23,7 @@ Python, LangChain, Supabase, HuggingFace, Kubernetes, Streamlit
    2. 可以选择长期存储或者临时存储
 7. 部署：
    1. kubernetes
+
+## 常用指令
+1. 配置环境 `sudo pip install -r requirements.txt`
+2. 本地运行 `streamlit run ./src/main.py`

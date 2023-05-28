@@ -1,7 +1,8 @@
- pypdfium2
- streamlit_chat
- langchain
- streamlit
- tiktoken
- faiss-cpu
- openai
+pymupdf
+streamlit_chat
+langchain
+streamlit
+tiktoken
+faiss-cpu
+python-dotenv
+chromadb
