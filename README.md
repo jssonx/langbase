@@ -29,10 +29,10 @@ Python, LangChain, Supabase, HuggingFace, Kubernetes, Streamlit
    1. (ok) 添加token/金额的计数显示
    2. (ok) 修改更好看的UI
 6. 向量数据存储：
-   1. 改为supabase
-   2. 可以选择长期存储或者临时存储
+   1. (ok) 添加支持supabase
+   2. (ok) 可以选择长期存储或者临时存储
 7. 部署：
-   1. kubernetes
+   1. docker
 
 ## 常用指令
 1. 配置环境 `sudo pip install -r requirements.txt`
